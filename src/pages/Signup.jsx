@@ -50,34 +50,34 @@ const Signup = () => {
 
   return (
     <AuthLayout title="Create your account" subtitle="Start typing code faster today — it's free">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Button type="button" variant="glass" size="lg" className="w-full border border-border">
-          <Globe size={18} />
-          Sign up with Google
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-4">
+        <Button type="button" variant="glass" size="lg" className="w-full border border-border flex items-center justify-center gap-2 py-3">
+          <Globe size={18} className="text-primary" />
+          <span>Sign up with Google</span>
         </Button>
 
         <Divider label="or sign up with email" />
 
         <Input label="Full Name" placeholder="John Doe" icon={User} error={errors.name?.message} {...register('name')} />
-        <Input label="Email" type="email" placeholder="dev@example.com" icon={Mail} error={errors.email?.message} {...register('email')} />
+        <Input label="Email Address" type="email" placeholder="dev@example.com" icon={Mail} error={errors.email?.message} {...register('email')} />
 
-        <div className="relative">
-          <Input
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Min. 8 characters"
-            icon={Lock}
-            error={errors.password?.message}
-            {...register('password')}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-9 text-muted hover:text-text-primary transition-colors"
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
+        <Input
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="Min. 8 characters"
+          icon={Lock}
+          error={errors.password?.message}
+          rightElement={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-muted hover:text-text-primary transition-colors p-1"
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          }
+          {...register('password')}
+        />
 
         <Input
           label="Confirm Password"
@@ -88,20 +88,20 @@ const Signup = () => {
           {...register('confirmPassword')}
         />
 
-        <p className="text-xs text-muted">
+        <p className="text-xs text-muted leading-relaxed">
           By signing up, you agree to our{' '}
-          <a href="#" className="text-primary hover:underline">Terms of Service</a> and{' '}
-          <a href="#" className="text-primary hover:underline">Privacy Policy</a>.
+          <a href="#" className="text-primary hover:underline font-medium">Terms of Service</a> and{' '}
+          <a href="#" className="text-primary hover:underline font-medium">Privacy Policy</a>.
         </p>
 
-        <Button type="submit" variant="primary" size="lg" className="w-full" isLoading={isLoading}>
+        <Button type="submit" variant="primary" size="lg" className="w-full mt-2 font-bold py-3" isLoading={isLoading}>
           Create Account
         </Button>
       </form>
 
-      <p className="text-center text-sm text-text-secondary mt-5">
+      <p className="text-center text-xs sm:text-sm text-text-secondary mt-5">
         Already have an account?{' '}
-        <Link to={ROUTES.LOGIN} className="text-primary hover:text-yellow-300 font-medium transition-colors">
+        <Link to={ROUTES.LOGIN} className="text-primary hover:text-yellow-300 font-bold transition-colors">
           Sign in
         </Link>
       </p>

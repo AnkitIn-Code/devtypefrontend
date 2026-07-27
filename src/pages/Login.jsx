@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, Globe } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AuthLayout } from '@layouts/AuthLayout';
@@ -58,23 +57,23 @@ const Login = () => {
 
   return (
     <AuthLayout title="Welcome back" subtitle="Sign in to your account to continue">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
         {/* Google Login */}
         <Button
           type="button"
           variant="glass"
           size="lg"
-          className="w-full border border-border"
+          className="w-full border border-border flex items-center justify-center gap-2 py-3"
           onClick={handleGoogleLogin}
         >
-          <Globe size={18} />
-          Continue with Google
+          <Globe size={18} className="text-primary" />
+          <span>Continue with Google</span>
         </Button>
 
         <Divider label="or sign in with email" />
 
         <Input
-          label="Email"
+          label="Email Address"
           type="email"
           placeholder="dev@example.com"
           icon={Mail}
@@ -82,60 +81,62 @@ const Login = () => {
           {...register('email')}
         />
 
-        <div className="relative">
-          <Input
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="••••••••"
-            icon={Lock}
-            error={errors.password?.message}
-            {...register('password')}
-          />
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-9 text-muted hover:text-text-primary transition-colors"
-          >
-            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-          </button>
-        </div>
+        <Input
+          label="Password"
+          type={showPassword ? 'text' : 'password'}
+          placeholder="••••••••"
+          icon={Lock}
+          error={errors.password?.message}
+          rightElement={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-muted hover:text-text-primary transition-colors p-1"
+              title={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          }
+          {...register('password')}
+        />
 
         {/* Remember Me + Forgot Password */}
-        <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 cursor-pointer">
+        <div className="flex items-center justify-between pt-1">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
             <input
               type="checkbox"
               {...register('rememberMe')}
-              className="w-4 h-4 rounded border-border bg-surface accent-primary"
+              className="w-4 h-4 rounded border-border bg-surface accent-primary cursor-pointer"
             />
-            <span className="text-sm text-text-secondary">Remember me</span>
+            <span className="text-xs sm:text-sm text-text-secondary">Remember me</span>
           </label>
           <Link
             to={ROUTES.FORGOT_PASSWORD}
-            className="text-sm text-primary hover:text-yellow-300 transition-colors"
+            className="text-xs sm:text-sm text-primary hover:text-yellow-300 font-medium transition-colors"
           >
             Forgot password?
           </Link>
         </div>
 
-        <Button type="submit" variant="primary" size="lg" className="w-full" isLoading={isLoading}>
+        <Button type="submit" variant="primary" size="lg" className="w-full mt-2 font-bold py-3" isLoading={isLoading}>
           Sign In
         </Button>
       </form>
 
       {/* Guest mode */}
-      <div className="mt-4">
+      <div className="mt-4 pt-3 border-t border-border/40">
         <button
           onClick={handleGuestMode}
-          className="w-full py-2.5 text-sm text-muted hover:text-text-secondary transition-colors"
+          className="w-full py-2.5 text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center justify-center gap-1 font-medium"
         >
-          Continue as Guest →
+          <span>Continue as Guest</span>
+          <span>→</span>
         </button>
       </div>
 
-      <p className="text-center text-sm text-text-secondary mt-5">
+      <p className="text-center text-xs sm:text-sm text-text-secondary mt-5">
         Don't have an account?{' '}
-        <Link to={ROUTES.SIGNUP} className="text-primary hover:text-yellow-300 font-medium transition-colors">
+        <Link to={ROUTES.SIGNUP} className="text-primary hover:text-yellow-300 font-bold transition-colors">
           Sign up for free
         </Link>
       </p>
