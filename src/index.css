@@ -1,122 +1,240 @@
 @import "tailwindcss";
 
-@theme {
-  /* Colors */
-  --color-background: #18181B;
-  --color-surface: #27272A;
-  --color-surface-2: #3F3F46;
-  --color-surface-3: #52525B;
-  --color-border: #3F3F46;
-  
-  --color-primary: #EAB308;
-  --color-primary-50: #FEF9C3;
-  --color-primary-100: #FEF08A;
-  --color-primary-200: #FDE047;
-  --color-primary-300: #FACC15;
-  --color-primary-400: #EAB308;
-  --color-primary-500: #CA8A04;
-  
-  --color-success: #22C55E;
-  --color-error: #EF4444;
-  --color-warning: #F59E0B;
-  --color-info: #3B82F6;
-  --color-muted: #71717A;
-  --color-text-primary: #FAFAFA;
-  --color-text-secondary: #A1A1AA;
-  --color-text-muted: #52525B;
+/* ============================================================
+   THEME DESIGN TOKENS
+   Switching is done by [data-theme="light"] / [data-theme="dark"]
+   on <html>. Default = dark.
+   ============================================================ */
 
-  /* Fonts */
+/* ── Dark Theme (default / violet-indigo midnight) ── */
+:root,
+[data-theme="dark"] {
+  /* Page surfaces */
+  --bg-base:        #0b0b12;
+  --bg-surface:     #13131f;
+  --bg-surface-2:   #1e1e2e;
+  --bg-surface-3:   #2a2a3e;
+
+  /* Borders */
+  --border:         rgba(255,255,255,0.07);
+  --border-strong:  rgba(255,255,255,0.14);
+
+  /* Text */
+  --text-primary:   #f1f0f9;
+  --text-secondary: #a09ec0;
+  --text-muted:     #5c5a7a;
+
+  /* Accent – violet/indigo */
+  --accent:         #7c3aed;
+  --accent-light:   #a78bfa;
+  --accent-dim:     rgba(124,58,237,0.15);
+  --accent-border:  rgba(124,58,237,0.25);
+
+  /* Semantic */
+  --success:        #22c55e;
+  --error:          #ef4444;
+  --warning:        #f59e0b;
+  --info:           #60a5fa;
+
+  /* Primary (yellow, kept for typing chars) */
+  --color-primary:  #7c3aed;
+
+  /* Glassmorphism card */
+  --card-bg:        rgba(19,19,31,0.85);
+  --card-border:    rgba(255,255,255,0.06);
+
+  /* Navbar */
+  --nav-bg:         rgba(11,11,18,0.92);
+  --nav-border:     rgba(124,58,237,0.10);
+
+  /* Input */
+  --input-bg:       #13131f;
+  --input-border:   rgba(255,255,255,0.08);
+  --input-focus:    rgba(124,58,237,0.40);
+
+  /* Toast */
+  --toast-bg:       #1e1e2e;
+  --toast-color:    #f1f0f9;
+  --toast-border:   rgba(255,255,255,0.08);
+
+  /* Typing chars */
+  --char-correct:   #34d399;
+  --char-wrong:     #f87171;
+  --char-remaining: #3f3d5c;
+  --char-current:   #f1f0f9;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #2a2a3e;
+
+  /* Body bg for JS */
+  color-scheme: dark;
+}
+
+/* ── Light Theme (clean slate/indigo) ── */
+[data-theme="light"] {
+  /* Page surfaces */
+  --bg-base:        #f8f7ff;
+  --bg-surface:     #ffffff;
+  --bg-surface-2:   #f0effe;
+  --bg-surface-3:   #e4e1fd;
+
+  /* Borders */
+  --border:         rgba(109,86,218,0.12);
+  --border-strong:  rgba(109,86,218,0.25);
+
+  /* Text */
+  --text-primary:   #1a1638;
+  --text-secondary: #4b4575;
+  --text-muted:     #9794b8;
+
+  /* Accent – same violet but on light bg */
+  --accent:         #6d56da;
+  --accent-light:   #8b76f0;
+  --accent-dim:     rgba(109,86,218,0.08);
+  --accent-border:  rgba(109,86,218,0.18);
+
+  /* Semantic */
+  --success:        #16a34a;
+  --error:          #dc2626;
+  --warning:        #d97706;
+  --info:           #2563eb;
+
+  /* Primary */
+  --color-primary:  #6d56da;
+
+  /* Glassmorphism card */
+  --card-bg:        rgba(255,255,255,0.90);
+  --card-border:    rgba(109,86,218,0.10);
+
+  /* Navbar */
+  --nav-bg:         rgba(248,247,255,0.95);
+  --nav-border:     rgba(109,86,218,0.08);
+
+  /* Input */
+  --input-bg:       #ffffff;
+  --input-border:   rgba(109,86,218,0.15);
+  --input-focus:    rgba(109,86,218,0.30);
+
+  /* Toast */
+  --toast-bg:       #ffffff;
+  --toast-color:    #1a1638;
+  --toast-border:   rgba(109,86,218,0.15);
+
+  /* Typing chars */
+  --char-correct:   #16a34a;
+  --char-wrong:     #dc2626;
+  --char-remaining: #c4c1e0;
+  --char-current:   #1a1638;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #c4c1e0;
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   MAP VARS → Tailwind color tokens
+   ============================================================ */
+@theme {
+  --color-background: var(--bg-base);
+  --color-surface:    var(--bg-surface);
+  --color-surface-2:  var(--bg-surface-2);
+  --color-surface-3:  var(--bg-surface-3);
+  --color-border:     var(--border);
+  --color-primary:    var(--accent);
+
+  --color-success:    var(--success);
+  --color-error:      var(--error);
+  --color-warning:    var(--warning);
+  --color-info:       var(--info);
+  --color-muted:      var(--text-muted);
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted:     var(--text-muted);
+
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Animations */
-  --animate-blink: blink 1s step-end infinite;
-  --animate-glow: glow 2s ease-in-out infinite alternate;
-  --animate-float: float 6s ease-in-out infinite;
+  --animate-blink:    blink 1s step-end infinite;
+  --animate-glow:     glow 2s ease-in-out infinite alternate;
+  --animate-float:    float 6s ease-in-out infinite;
   --animate-slide-up: slideUp 0.3s ease-out;
-  --animate-fade-in: fadeIn 0.4s ease-out;
+  --animate-fade-in:  fadeIn 0.4s ease-out;
 
-  /* Keyframes */
   @keyframes blink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    50%       { opacity: 0; }
   }
   @keyframes glow {
-    0% { box-shadow: 0 0 5px #EAB308, 0 0 10px #EAB308; }
-    100% { box-shadow: 0 0 20px #EAB308, 0 0 40px #EAB308; }
+    0%   { box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent); }
+    100% { box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent); }
   }
   @keyframes slideUp {
-    0% { transform: translateY(10px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+    0%   { transform: translateY(10px); opacity: 0; }
+    100% { transform: translateY(0);    opacity: 1; }
   }
   @keyframes fadeIn {
-    0% { opacity: 0; }
+    0%   { opacity: 0; }
     100% { opacity: 1; }
   }
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { transform: translateY(0px);  }
+    50%       { transform: translateY(-20px); }
   }
 }
 
-/* Base styles */
+/* ============================================================
+   BASE
+   ============================================================ */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3F3F46 transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
+*::-webkit-scrollbar       { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+*::-webkit-scrollbar-thumb:hover { filter: brightness(1.2); }
 
-*::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: #3F3F46;
-  border-radius: 3px;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-  background: #52525B;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background-color: #18181B;
-  color: #FAFAFA;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, sans-serif;
   font-feature-settings: 'rlig' 1, 'calt' 1;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background: rgba(234, 179, 8, 0.3);
-  color: #fafafa;
+  background: rgba(124,58,237,0.25);
+  color: var(--text-primary);
 }
 
-/* Component classes */
+/* ============================================================
+   GLASS COMPONENTS
+   ============================================================ */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--card-border);
 }
 
 .glass-card {
-  background: rgba(39, 39, 42, 0.8);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid #3F3F46;
+  border: 1px solid var(--card-border);
   border-radius: 16px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
+/* ============================================================
+   BUTTONS
+   ============================================================ */
 .btn-primary {
-  background-color: #EAB308;
-  color: #18181B;
+  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+  color: #fff;
   font-weight: 600;
   padding: 10px 20px;
   border-radius: 12px;
@@ -126,17 +244,14 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 4px 14px rgba(124,58,237,0.25);
 }
-.btn-primary:hover {
-  background-color: #FACC15;
-}
-.btn-primary:active {
-  transform: scale(0.96);
-}
+.btn-primary:hover  { filter: brightness(1.1); box-shadow: 0 6px 20px rgba(124,58,237,0.35); }
+.btn-primary:active { transform: scale(0.96); }
 
 .btn-ghost {
   background: transparent;
-  color: #A1A1AA;
+  color: var(--text-secondary);
   font-weight: 500;
   padding: 10px 20px;
   border-radius: 12px;
@@ -148,17 +263,17 @@ body {
   gap: 8px;
 }
 .btn-ghost:hover {
-  color: #FAFAFA;
-  background: rgba(63, 63, 70, 0.5);
+  color: var(--text-primary);
+  background: var(--accent-dim);
 }
 
 .btn-outline {
   background: transparent;
-  color: #A1A1AA;
+  color: var(--text-secondary);
   font-weight: 500;
   padding: 10px 20px;
   border-radius: 12px;
-  border: 1px solid #3F3F46;
+  border: 1px solid var(--border);
   cursor: pointer;
   transition: all 0.2s;
   display: inline-flex;
@@ -166,74 +281,69 @@ body {
   gap: 8px;
 }
 .btn-outline:hover {
-  border-color: rgba(234, 179, 8, 0.5);
-  color: #EAB308;
+  border-color: var(--accent-border);
+  color: var(--accent-light);
+  background: var(--accent-dim);
 }
 
+/* ============================================================
+   INPUT FIELDS
+   ============================================================ */
 .input-field {
-  background: #27272A;
-  border: 1px solid #3F3F46;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
   border-radius: 12px;
   padding: 12px 16px;
-  color: #FAFAFA;
+  color: var(--text-primary);
   font-size: 14px;
   width: 100%;
   outline: none;
   transition: all 0.2s;
   font-family: inherit;
 }
-.input-field::placeholder {
-  color: #71717A;
-}
+.input-field::placeholder { color: var(--text-muted); }
 .input-field:focus {
-  border-color: rgba(234, 179, 8, 0.6);
-  box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--input-focus);
 }
 
-.char-correct { color: #22C55E; }
-.char-wrong { color: #EF4444; background: rgba(239, 68, 68, 0.1); border-radius: 2px; }
-.char-remaining { color: #71717A; }
-.char-current { color: #FAFAFA; }
+/* ============================================================
+   TYPING CHARS
+   ============================================================ */
+.char-correct   { color: var(--char-correct); }
+.char-wrong     { color: var(--char-wrong); background: rgba(239,68,68,0.08); border-radius: 2px; }
+.char-remaining { color: var(--char-remaining); }
+.char-current   { color: var(--char-current); }
 
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
 .text-gradient {
-  background: linear-gradient(to right, #EAB308, #FACC15);
+  background: linear-gradient(135deg, var(--accent-light), #818cf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.glow-primary {
-  box-shadow: 0 0 20px rgba(234, 179, 8, 0.3), 0 0 60px rgba(234, 179, 8, 0.1);
-}
-
-.shadow-glow {
-  box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
-}
-
-.shadow-glow-sm {
-  box-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
-}
-
-.shadow-glass {
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
+.glow-primary  { box-shadow: 0 0 20px rgba(124,58,237,0.30), 0 0 60px rgba(124,58,237,0.10); }
+.shadow-glow   { box-shadow: 0 0 20px rgba(124,58,237,0.30); }
+.shadow-glow-sm{ box-shadow: 0 0 10px rgba(124,58,237,0.20); }
+.shadow-glass  { box-shadow: 0 8px 32px 0 rgba(0,0,0,0.20); }
 
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Sidebar link */
+/* Sidebar link (legacy, kept for any remaining usage) */
 .sidebar-link {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 12px;
   border-radius: 12px;
-  color: #A1A1AA;
+  color: var(--text-secondary);
   font-weight: 500;
   font-size: 14px;
   cursor: pointer;
@@ -241,11 +351,94 @@ body {
   text-decoration: none;
 }
 .sidebar-link:hover {
-  color: #FAFAFA;
-  background: rgba(63, 63, 70, 0.5);
+  color: var(--text-primary);
+  background: var(--accent-dim);
 }
 .sidebar-link.active {
-  background: rgba(234, 179, 8, 0.1);
-  color: #EAB308;
-  border: 1px solid rgba(234, 179, 8, 0.2);
+  background: var(--accent-dim);
+  color: var(--accent-light);
+  border: 1px solid var(--accent-border);
+}
+
+/* ============================================================
+   LIGHT MODE OVERRIDES
+   Fixes Tailwind zinc / white-alpha classes that are dark-only
+   ============================================================ */
+
+[data-theme="light"] body {
+  background-color: #f8f7ff;
+}
+
+[data-theme="light"] .glass-card {
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(109,86,218,0.10);
+  box-shadow: 0 2px 16px rgba(109,86,218,0.06);
+}
+
+/* ---- Text that is hardcoded with Tailwind zinc classes ---- */
+/* Map zinc-400/500/600/700 → semantic vars in light mode */
+[data-theme="light"] .text-zinc-400,
+[data-theme="light"] .text-zinc-500 {
+  color: var(--text-secondary) !important;
+}
+[data-theme="light"] .text-zinc-600,
+[data-theme="light"] .text-zinc-700 {
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+
+/* ---- Backgrounds ---- */
+/* bg-white/5 (nearly invisible on dark → use surface on light) */
+[data-theme="light"] .bg-white\/5 {
+  background-color: var(--bg-surface-2) !important;
+}
+[data-theme="light"] .bg-white\/10 {
+  background-color: var(--bg-surface-3) !important;
+}
+
+/* Panels with tiny white-alpha bg that look black on dark pages */
+[data-theme="light"] [style*="rgba(255,255,255,0.025)"] {
+  background: rgba(109,86,218,0.04) !important;
+}
+[data-theme="light"] [style*="rgba(255,255,255,0.04)"] {
+  background: var(--bg-surface-2) !important;
+}
+
+/* ---- Borders ---- */
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/\[0\.04\] {
+  border-color: var(--border) !important;
+}
+[data-theme="light"] .divide-white\/\[0\.04\] > * {
+  border-color: var(--border) !important;
+}
+
+/* ---- Hover bg that references white/% ---- */
+[data-theme="light"] .hover\:bg-white\/5:hover {
+  background-color: var(--accent-dim) !important;
+}
+
+/* ---- Violet / indigo tinted text stays readable ---- */
+[data-theme="light"] .text-violet-300,
+[data-theme="light"] .text-violet-400 {
+  color: var(--accent) !important;
+}
+
+/* ---- Dark gradient backgrounds used in hero / cards ---- */
+/* Any inline gradient that contains #0d0d18 (hero dark bg) */
+[data-theme="light"] .bg-gradient-to-br.from-violet-950\/80 {
+  background: linear-gradient(135deg, rgba(109,86,218,0.06), rgba(248,247,255,0.95)) !important;
+}
+
+/* navbar active link gets the right colors */
+[data-theme="light"] nav .bg-violet-500\/15 {
+  background-color: var(--accent-dim) !important;
+}
+[data-theme="light"] nav .border-violet-500\/25 {
+  border-color: var(--accent-border) !important;
+}
+[data-theme="light"] nav .text-violet-300 {
+  color: var(--accent) !important;
 }

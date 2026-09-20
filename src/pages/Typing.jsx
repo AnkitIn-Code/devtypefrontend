@@ -154,80 +154,88 @@ const Typing = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="mt-6 space-y-6"
+              className="mt-6"
             >
-              {/* Live Stats */}
-              <div className="glass-card p-4">
-                <LiveStats
-                  wpm={wpm}
-                  rawWpm={rawWpm}
-                  accuracy={accuracy}
-                  errors={errors}
-                  elapsedTime={elapsedTime}
-                  currentIndex={currentIndex}
-                  totalChars={typedChars.length}
-                  status={status}
-                  onRestart={handleRestart}
-                  onPause={pause}
-                  onFullscreen={toggleFullscreen}
-                  isFullscreen={isFullscreen}
-                />
-              </div>
+              {/* Split Screen Container: Left (Code Typing Arena) | Right (Live HUD & Graph) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                {/* Left Window: Code Typing Canvas */}
+                <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+                  <div className="glass-card p-6 md:p-8 relative min-h-[420px] flex flex-col justify-between">
+                    {/* Paused overlay */}
+                    <AnimatePresence>
+                      {status === 'paused' && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10"
+                        >
+                          <div className="text-center">
+                            <div className="text-4xl mb-2">⏸️</div>
+                            <p className="text-text-secondary font-medium">Paused — click anywhere to resume</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
 
-              {/* Typing Area */}
-              <div className="glass-card p-8 relative">
-                {/* Paused overlay */}
-                <AnimatePresence>
-                  {status === 'paused' && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10"
+                    {/* Idle hint */}
+                    {status === 'idle' && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute top-3 right-4 text-xs text-muted font-medium bg-surface-2/60 px-2.5 py-1 rounded-lg border border-border/50"
+                      >
+                        ⚡ Start typing to begin...
+                      </motion.div>
+                    )}
+
+                    <div
+                      className="overflow-auto max-h-[60vh] no-scrollbar py-2"
+                      onClick={status === 'paused' ? pause : undefined}
                     >
-                      <div className="text-center">
-                        <div className="text-4xl mb-2">⏸️</div>
-                        <p className="text-text-secondary font-medium">Paused — click anywhere to resume</p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Idle hint */}
-                {status === 'idle' && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="absolute top-3 right-4 text-xs text-muted"
-                  >
-                    Start typing to begin...
-                  </motion.div>
-                )}
-
-                <div
-                  className="overflow-auto max-h-[60vh] no-scrollbar"
-                  onClick={pause}
-                >
-                  {typedChars.length > 0 ? (
-                    <TypingArea
-                      typedChars={typedChars}
-                      currentIndex={currentIndex}
-                      fontSize={fontSize || 16}
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-40">
-                      <Spinner size="lg" />
+                      {typedChars.length > 0 ? (
+                        <TypingArea
+                          typedChars={typedChars}
+                          currentIndex={currentIndex}
+                          fontSize={fontSize || 16}
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-40">
+                          <Spinner size="lg" />
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
 
-              {/* Keyboard hint */}
-              <div className="text-center">
-                <p className="text-xs text-muted">
-                  Press <kbd className="bg-surface-2 px-1.5 py-0.5 rounded text-text-secondary">Tab</kbd> to restart
-                  · <kbd className="bg-surface-2 px-1.5 py-0.5 rounded text-text-secondary">Esc</kbd> to pause
-                </p>
+                    <div className="pt-4 border-t border-border/30 flex items-center justify-between text-xs text-muted">
+                      <span>Smart Auto-Indent active ↵</span>
+                      <span>
+                        <kbd className="bg-surface-2 px-1.5 py-0.5 rounded text-text-secondary">Tab</kbd> restart ·{' '}
+                        <kbd className="bg-surface-2 px-1.5 py-0.5 rounded text-text-secondary">Esc</kbd> pause
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Window: Live HUD & Real-time Graph */}
+                <div className="lg:col-span-5 xl:col-span-4 sticky top-6">
+                  <div className="glass-card p-5">
+                    <LiveStats
+                      wpm={wpm}
+                      rawWpm={rawWpm}
+                      accuracy={accuracy}
+                      errors={errors}
+                      elapsedTime={elapsedTime}
+                      currentIndex={currentIndex}
+                      totalChars={typedChars.length}
+                      status={status}
+                      wpmHistory={wpmHistory}
+                      onRestart={handleRestart}
+                      onPause={pause}
+                      onFullscreen={toggleFullscreen}
+                      isFullscreen={isFullscreen}
+                    />
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}

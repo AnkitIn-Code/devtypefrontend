@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from '@store/auth.store';
+import { useSettingsStore } from '@store/settings.store';
 import { ROUTES } from '@constants';
 import { Spinner } from '@components/common/Badge';
 
@@ -57,63 +58,85 @@ const PageLoader = () => (
   </div>
 );
 
+// Theme provider — syncs Zustand theme to html[data-theme]
+const ThemeProvider = ({ children }) => {
+  const { theme } = useSettingsStore();
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    // Also set a class for Tailwind dark: variants if needed
+    if (theme === 'dark') {
+      root.classList.add('dark');
+      root.classList.remove('light');
+    } else {
+      root.classList.add('light');
+      root.classList.remove('dark');
+    }
+  }, [theme]);
+
+  return children;
+};
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            {/* Public Routes */}
-            <Route path={ROUTES.HOME} element={<Landing />} />
-            <Route path={ROUTES.TYPING} element={<Typing />} />
-            <Route path={ROUTES.TYPING_TEMPLATE} element={<Typing />} />
-            <Route path={ROUTES.TEMPLATES} element={<Templates />} />
-            <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
+      <ThemeProvider>
+        <BrowserRouter>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Public Routes */}
+              <Route path={ROUTES.HOME} element={<Landing />} />
+              <Route path={ROUTES.TYPING} element={<Typing />} />
+              <Route path={ROUTES.TYPING_TEMPLATE} element={<Typing />} />
+              <Route path={ROUTES.TEMPLATES} element={<Templates />} />
+              <Route path={ROUTES.LEADERBOARD} element={<Leaderboard />} />
 
-            {/* Auth Routes (redirect if logged in) */}
-            <Route path={ROUTES.LOGIN} element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
-            <Route path={ROUTES.SIGNUP} element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
-            <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
+              {/* Auth Routes (redirect if logged in) */}
+              <Route path={ROUTES.LOGIN} element={<PublicOnlyRoute><Login /></PublicOnlyRoute>} />
+              <Route path={ROUTES.SIGNUP} element={<PublicOnlyRoute><Signup /></PublicOnlyRoute>} />
+              <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
 
-            {/* Protected Routes */}
-            <Route path={ROUTES.DASHBOARD} element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path={ROUTES.CREATE_TEMPLATE} element={<ProtectedRoute><CreateTemplate /></ProtectedRoute>} />
-            <Route path={ROUTES.AI_TEMPLATE} element={<ProtectedRoute><AITemplate /></ProtectedRoute>} />
-            <Route path={ROUTES.MULTIPLAYER} element={<ProtectedRoute><Multiplayer /></ProtectedRoute>} />
-            <Route path={ROUTES.MULTIPLAYER_ROOM} element={<ProtectedRoute><MultiplayerRoom /></ProtectedRoute>} />
-            <Route path={ROUTES.REPORTS} element={<ProtectedRoute><Reports /></ProtectedRoute>} />
-            <Route path={ROUTES.REPORT_DETAIL} element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
-            <Route path={ROUTES.PROFILE} element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            <Route path={ROUTES.ACHIEVEMENTS} element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
-            <Route path={ROUTES.SETTINGS} element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              {/* Protected Routes */}
+              <Route path={ROUTES.DASHBOARD} element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path={ROUTES.CREATE_TEMPLATE} element={<ProtectedRoute><CreateTemplate /></ProtectedRoute>} />
+              <Route path={ROUTES.AI_TEMPLATE} element={<ProtectedRoute><AITemplate /></ProtectedRoute>} />
+              <Route path={ROUTES.MULTIPLAYER} element={<ProtectedRoute><Multiplayer /></ProtectedRoute>} />
+              <Route path={ROUTES.MULTIPLAYER_ROOM} element={<ProtectedRoute><MultiplayerRoom /></ProtectedRoute>} />
+              <Route path={ROUTES.REPORTS} element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+              <Route path={ROUTES.REPORT_DETAIL} element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
+              <Route path={ROUTES.PROFILE} element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path={ROUTES.ACHIEVEMENTS} element={<ProtectedRoute><Achievements /></ProtectedRoute>} />
+              <Route path={ROUTES.SETTINGS} element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+              {/* 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
 
-      {/* Global Toast Notifications */}
-      <Toaster
-        position="bottom-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#27272A',
-            color: '#FAFAFA',
-            border: '1px solid #3F3F46',
-            borderRadius: '12px',
-            fontSize: '14px',
-            fontFamily: 'Inter, sans-serif',
-          },
-          success: {
-            iconTheme: { primary: '#EAB308', secondary: '#18181B' },
-          },
-          error: {
-            iconTheme: { primary: '#EF4444', secondary: '#18181B' },
-          },
-        }}
-      />
+        {/* Global Toast Notifications */}
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: 'var(--toast-bg)',
+              color: 'var(--toast-color)',
+              border: '1px solid var(--toast-border)',
+              borderRadius: '12px',
+              fontSize: '14px',
+              fontFamily: 'Inter, sans-serif',
+            },
+            success: {
+              iconTheme: { primary: '#7c3aed', secondary: '#ffffff' },
+            },
+            error: {
+              iconTheme: { primary: '#EF4444', secondary: '#ffffff' },
+            },
+          }}
+        />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

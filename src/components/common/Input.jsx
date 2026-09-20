@@ -6,6 +6,7 @@ export const Input = forwardRef(({
   error,
   hint,
   icon: Icon,
+  rightElement,
   className = '',
   containerClassName = '',
   ...props
@@ -17,22 +18,28 @@ export const Input = forwardRef(({
           {label}
         </label>
       )}
-      <div className="relative">
+      <div className="relative flex items-center">
         {Icon && (
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted">
+          <span className="absolute left-3.5 text-muted pointer-events-none z-10">
             <Icon size={16} />
           </span>
         )}
         <input
           ref={ref}
           className={cn(
-            'input-field',
+            'input-field w-full',
             Icon && 'pl-10',
+            rightElement && 'pr-10',
             error && 'border-error/60 focus:border-error focus:ring-error/20',
             className
           )}
           {...props}
         />
+        {rightElement && (
+          <div className="absolute right-3 flex items-center z-10">
+            {rightElement}
+          </div>
+        )}
       </div>
       {error && <p className="text-xs text-error">{error}</p>}
       {hint && !error && <p className="text-xs text-muted">{hint}</p>}

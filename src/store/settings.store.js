@@ -19,6 +19,7 @@ export const useSettingsStore = create(
       stopOnError: false,
 
       setTheme: (theme) => set({ theme }),
+      toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
       setFont: (font) => set({ font }),
       setFontSize: (fontSize) => set({ fontSize }),
       setCursorStyle: (cursorStyle) => set({ cursorStyle }),
