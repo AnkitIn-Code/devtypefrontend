@@ -1,0 +1,69 @@
+# gitleaks.toml — Secret scanning configuration for DevType
+# Run: gitleaks detect --config .gitleaks.toml
+# Install: https://github.com/gitleaks/gitleaks#install
+#
+# This config catches the exact class of secrets that caused B-01:
+#   - Neon/PostgreSQL connection strings with passwords
+#   - JWT secrets (Base64 256-bit keys)
+#   - Fireworks AI API keys
+#   - Resend API keys
+#   - Generic high-entropy strings in startup scripts
+
+title = "DevType Secret Scanner"
+
+[extend]
+useDefault = true  # Inherit all built-in gitleaks rules
+
+# ── Custom rules for DevType-specific patterns ────────────────────────────────
+
+[[rules]]
+id          = "neon-connection-string"
+description = "Neon (PostgreSQL) connection string with embedded credentials"
+regex       = '''jdbc:postgresql://[^\s"']+:[^\s"'@]+@[^\s"']+'''
+tags        = ["database", "neon", "credentials"]
+severity    = "CRITICAL"
+
+[[rules]]
+id          = "fireworks-api-key"
+description = "Fireworks AI API key"
+regex       = '''fw_[A-Za-z0-9]{16,}'''
+tags        = ["api-key", "fireworks", "ai"]
+severity    = "CRITICAL"
+
+[[rules]]
+id          = "resend-api-key"
+description = "Resend transactional email API key"
+regex       = '''re_[A-Za-z0-9]{16,}'''
+tags        = ["api-key", "resend", "email"]
+severity    = "HIGH"
+
+[[rules]]
+id          = "neon-password-prefix"
+description = "Neon database password prefix pattern"
+regex       = '''npg_[A-Za-z0-9]{10,}'''
+tags        = ["database", "neon", "password"]
+severity    = "CRITICAL"
+
+[[rules]]
+id          = "powershell-env-assignment-with-value"
+description = "PowerShell environment variable assignment with what looks like a secret value"
+regex       = '''\$env:[A-Z_]+(PASSWORD|SECRET|KEY|TOKEN)\s*=\s*["'][^"']{10,}["']'''
+tags        = ["powershell", "secrets", "script"]
+severity    = "HIGH"
+
+# ── Allowlists: patterns that are safe to ignore ──────────────────────────────
+
+[allowlist]
+description = "Safe patterns that are not real secrets"
+regexes     = [
+  # Placeholder values in .env.example
+  '''<[a-z-]+>''',
+  # Generic Java test secrets
+  '''dGVzdC1zZWNyZXQta2V5LWZvci11bml0LXRlc3RzLW1pbi0zMi1jaGFycw==''',
+]
+paths       = [
+  # .env.example is safe — it contains only placeholder values
+  ".env.example",
+  # Test application.yml has a hardcoded test-only JWT secret
+  "src/test/resources/application.yml",
+]

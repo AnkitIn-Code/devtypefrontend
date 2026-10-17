@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: devtype-backend-test
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+  flyway:
+    enabled: false
+
+jwt:
+  secret: dGVzdC1zZWNyZXQta2V5LWZvci11bml0LXRlc3RzLW1pbi0zMi1jaGFycw==
+  access-expiry-ms: 900000
+  refresh-expiry-ms: 604800000
+
+app:
+  expose-dev-reset-token: true
+
+logging:
+  level:
+    com.devtype.backend: WARN
+    org.springframework.security: WARN

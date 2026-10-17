@@ -1,0 +1,12 @@
+-- V1__init.sql
+-- Initial schema migration for DevType / CodeType AI
+--
+-- Tables are defined in subsequent migrations (V2 onwards).
+-- This file establishes the baseline Flyway migration.
+--
+-- Schema conventions:
+--   • All primary keys use UUID (gen_random_uuid()) for distributed safety
+--   • Timestamps use TIMESTAMPTZ (timezone-aware)
+--   • Soft deletes: deleted_at TIMESTAMPTZ NULL
+--
+-- To add tables, create V2__create_users.sql, V3__create_templates.sql, etc.
